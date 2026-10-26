@@ -1,0 +1,12 @@
+name: 🚀 Fuseline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  security:
+    uses: loutik/.github/.github/workflows/security.yml@main
+    secrets: inherit
