@@ -1,0 +1,27 @@
+services:
+  poweradmin:
+    image: ghcr.io/poweradmin/poweradmin:4.5.0 # https://github.com/poweradmin/poweradmin/releases
+    container_name: poweradmin
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - padm_net
+
+  nginx:
+    image: nginx:alpine
+    container_name: poweradmin_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /opt/poweradmin/nginx/padm.conf:/etc/nginx/conf.d/default.conf:ro
+      - /opt/poweradmin/certs:/etc/nginx/certs:ro
+    depends_on:
+      - poweradmin
+    networks:
+      - padm_net
+
+networks:
+  padm_net:
